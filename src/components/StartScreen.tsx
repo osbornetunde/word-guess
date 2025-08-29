@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Team, GameSettings, AnswerMode } from '../types/game';
 import { TEAM_COLORS } from '../types/game';
+import { GAME_CONFIG } from '../constants/gameConfig';
 
 interface StartScreenProps {
   onStartGame: (settings: GameSettings) => void;
@@ -11,7 +12,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [newTeamName, setNewTeamName] = useState('');
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
-  const [numberOfWords, setNumberOfWords] = useState(5);
+  const [numberOfWords, setNumberOfWords] = useState<number>(GAME_CONFIG.WORDS_PER_GAME);
   const [answerMode, setAnswerMode] = useState<AnswerMode>('text');
 
   const addTeam = () => {
@@ -191,14 +192,14 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
               </label>
               <input
                 type="range"
-                min="3"
+                min="1"
                 max="15"
                 value={numberOfWords}
                 onChange={(e) => setNumberOfWords(parseInt(e.target.value))}
                 className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
               />
               <div className="flex justify-between text-sm text-gray-500 mt-1">
-                <span>3 words</span>
+                <span>1 word</span>
                 <span>15 words</span>
               </div>
             </div>
@@ -237,8 +238,8 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
               <h3 className="font-bold text-blue-800 mb-2 funky-text">Game Rules 📋</h3>
               <ul className="text-sm text-blue-700 space-y-1 classic-text">
                 <li>• Teams take turns guessing words</li>
-                <li>• Hints appear for 5 seconds only</li>
-                <li>• Correct answers earn 10 points</li>
+                <li>• Hints appear for {GAME_CONFIG.HINT_DURATION} seconds only</li>
+                <li>• Correct answers earn {GAME_CONFIG.POINTS_PER_CORRECT_ANSWER} points</li>
                 <li>• Choose an input mode: text, tiles, or voice</li>
                 <li>• Highest score wins!</li>
               </ul>

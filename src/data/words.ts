@@ -19,14 +19,14 @@ export const WORD_DATABASE: WordData[] = [
   {
     word: 'BUTTERFLY',
     hint: 'Colorful insect that transforms from a caterpillar',
-    options: ['BUTTERFLY', 'DRAGONFLY', 'CENTIPEDE', 'COCKROACH'], // Kept as these are good distractors of same length
+    options: ['BUTTERFLY', 'DRAGONFLY', 'CENTIPEDE', 'COCKROACH'],
     correctAnswer: 'BUTTERFLY',
     difficulty: 'easy'
   },
   {
     word: 'PIZZA',
     hint: 'Round Italian dish with cheese and toppings',
-    options: ['PIZZA', 'PASTA', 'BREAD', 'SALAD'], // Kept as these are good distractors of same length
+    options: ['PIZZA', 'PASTA', 'BREAD', 'SALAD'],
     correctAnswer: 'PIZZA',
     difficulty: 'easy'
   },
@@ -40,7 +40,7 @@ export const WORD_DATABASE: WordData[] = [
   {
     word: 'CASTLE',
     hint: 'Medieval fortress where kings and queens lived',
-    options: ['CASTLE', 'PALACE', 'TEMPLE', 'CHURCH'], // Kept as these are good distractors of same length
+    options: ['CASTLE', 'PALACE', 'TEMPLE', 'CHURCH'],
     correctAnswer: 'CASTLE',
     difficulty: 'easy'
   },
@@ -70,6 +70,76 @@ export const WORD_DATABASE: WordData[] = [
     hint: 'Electronic device for storing and processing data',
     options: ['COMPUTER', 'COMMUTER', 'CONSUMER', 'COMPOSER'],
     correctAnswer: 'COMPUTER',
+    difficulty: 'easy'
+  },
+  {
+    word: 'SUNFLOWER',
+    hint: 'Tall yellow flower that follows the sun',
+    options: ['SUNFLOWER', 'DAISY', 'ROSE', 'TULIP'],
+    correctAnswer: 'SUNFLOWER',
+    difficulty: 'easy'
+  },
+  {
+    word: 'BANANA',
+    hint: 'Yellow curved fruit that monkeys love',
+    options: ['BANANA', 'APPLE', 'ORANGE', 'GRAPE'],
+    correctAnswer: 'BANANA',
+    difficulty: 'easy'
+  },
+  {
+    word: 'CAMERA',
+    hint: 'Device used to take photographs',
+    options: ['CAMERA', 'RADIO', 'PHONE', 'CLOCK'],
+    correctAnswer: 'CAMERA',
+    difficulty: 'easy'
+  },
+  {
+    word: 'DIAMOND',
+    hint: 'Precious gemstone that is the hardest mineral',
+    options: ['DIAMOND', 'RUBY', 'EMERALD', 'SAPPHIRE'],
+    correctAnswer: 'DIAMOND',
+    difficulty: 'easy'
+  },
+  {
+    word: 'FOOTBALL',
+    hint: 'Popular sport played with a round ball',
+    options: ['FOOTBALL', 'BASKETBALL', 'VOLLEYBALL', 'TENNIS'],
+    correctAnswer: 'FOOTBALL',
+    difficulty: 'easy'
+  },
+  {
+    word: 'HAMBURGER',
+    hint: 'Popular fast food sandwich with beef patty',
+    options: ['HAMBURGER', 'HOTDOG', 'SANDWICH', 'BURGER'],
+    correctAnswer: 'HAMBURGER',
+    difficulty: 'easy'
+  },
+  {
+    word: 'IGLOO',
+    hint: 'Snow house built by Eskimos',
+    options: ['IGLOO', 'TENT', 'CABIN', 'HUT'],
+    correctAnswer: 'IGLOO',
+    difficulty: 'easy'
+  },
+  {
+    word: 'JELLYFISH',
+    hint: 'Sea creature with a bell-shaped body and tentacles',
+    options: ['JELLYFISH', 'OCTOPUS', 'SQUID', 'STARFISH'],
+    correctAnswer: 'JELLYFISH',
+    difficulty: 'easy'
+  },
+  {
+    word: 'KANGAROO',
+    hint: 'Australian marsupial that hops on two legs',
+    options: ['KANGAROO', 'KOALA', 'WOMBAT', 'PLATYPUS'],
+    correctAnswer: 'KANGAROO',
+    difficulty: 'easy'
+  },
+  {
+    word: 'LIGHTNING',
+    hint: 'Bright flash of electricity during a storm',
+    options: ['LIGHTNING', 'THUNDER', 'RAIN', 'WIND'],
+    correctAnswer: 'LIGHTNING',
     difficulty: 'easy'
   },
 
@@ -144,6 +214,69 @@ export const WORD_DATABASE: WordData[] = [
     correctAnswer: 'HYPOTHESIS',
     difficulty: 'medium'
   },
+  {
+    word: 'CHLOROPHYLL',
+    hint: 'Green pigment in plants that captures sunlight',
+    options: ['CHLOROPHYLL', 'CARBOHYDRATE', 'PROTEIN', 'FAT'],
+    correctAnswer: 'CHLOROPHYLL',
+    difficulty: 'medium'
+  },
+  {
+    word: 'CRYSTALLINE',
+    hint: 'Having the structure and form of a crystal',
+    options: ['CRYSTALLINE', 'CRYSTAL', 'CRYSTALIZE', 'CRYSTALLOID'],
+    correctAnswer: 'CRYSTALLINE',
+    difficulty: 'medium'
+  },
+  {
+    word: 'EQUILIBRIUM',
+    hint: 'State of balance between opposing forces',
+    options: ['EQUILIBRIUM', 'EQUILATERAL', 'EQUIVALENT', 'EQUANIMITY'],
+    correctAnswer: 'EQUILIBRIUM',
+    difficulty: 'medium'
+  },
+  {
+    word: 'INFINITESIMAL',
+    hint: 'Extremely small or negligible',
+    options: ['INFINITESIMAL', 'INFINITE', 'INFINITY', 'INFINITIVE'],
+    correctAnswer: 'INFINITESIMAL',
+    difficulty: 'medium'
+  },
+  {
+    word: 'LABYRINTHINE',
+    hint: 'Complicated and confusing like a maze',
+    options: ['LABYRINTHINE', 'LABYRINTH', 'LABORATORY', 'LABORIOUS'],
+    correctAnswer: 'LABYRINTHINE',
+    difficulty: 'medium'
+  },
+  {
+    word: 'MICROORGANISM',
+    hint: 'Tiny living thing that can only be seen with a microscope',
+    options: ['MICROORGANISM', 'MICROSCOPE', 'MICROWAVE', 'MICROPHONE'],
+    correctAnswer: 'MICROORGANISM',
+    difficulty: 'medium'
+  },
+  {
+    word: 'PARALLELISM',
+    hint: 'State of being parallel or the use of parallel structures',
+    options: ['PARALLELISM', 'PARALLEL', 'PARALLELOGRAM', 'PARAPHERNALIA'],
+    correctAnswer: 'PARALLELISM',
+    difficulty: 'medium'
+  },
+  {
+    word: 'QUADRILATERAL',
+    hint: 'Geometric shape with four sides',
+    options: ['QUADRILATERAL', 'TRIANGLE', 'PENTAGON', 'HEXAGON'],
+    correctAnswer: 'QUADRILATERAL',
+    difficulty: 'medium'
+  },
+  {
+    word: 'THERMODYNAMICS',
+    hint: 'Study of heat and its relation to work and energy',
+    options: ['THERMODYNAMICS', 'THERMOMETER', 'THERMOSTAT', 'THERAPY'],
+    correctAnswer: 'THERMODYNAMICS',
+    difficulty: 'medium'
+  },
 
   // Hard words
   {
@@ -214,6 +347,104 @@ export const WORD_DATABASE: WordData[] = [
     hint: 'Having great physical beauty',
     options: ['PULCHRITUDINOUS', 'MULTITUDINOUS', 'LATITUDINOUS', 'ALTITUDINOUS'],
     correctAnswer: 'PULCHRITUDINOUS',
+    difficulty: 'hard'
+  },
+  {
+    word: 'ANTIDISESTABLISHMENTARIANISM',
+    hint: 'Opposition to the disestablishment of the Church of England',
+    options: ['ANTIDISESTABLISHMENTARIANISM', 'ANTIDISESTABLISHMENT', 'ESTABLISHMENT', 'DISMANTLEMENT'],
+    correctAnswer: 'ANTIDISESTABLISHMENTARIANISM',
+    difficulty: 'hard'
+  },
+  {
+    word: 'CHLOROFORM',
+    hint: 'Colorless liquid used as an anesthetic',
+    options: ['CHLOROFORM', 'CHLOROPHYLL', 'CHLORINE', 'CHLORIDE'],
+    correctAnswer: 'CHLOROFORM',
+    difficulty: 'hard'
+  },
+  {
+    word: 'CONNOISSEUR',
+    hint: 'An expert judge in matters of taste',
+    options: ['CONNOISSEUR', 'CONNOISSEURS', 'CONNAISSANCE', 'CONNAISSEUR'],
+    correctAnswer: 'CONNOISSEUR',
+    difficulty: 'hard'
+  },
+  {
+    word: 'DIFFERENTIATE',
+    hint: 'To make or become different',
+    options: ['DIFFERENTIATE', 'DIFFERENTIAL', 'DIFFERENCE', 'DIFFERENT'],
+    correctAnswer: 'DIFFERENTIATE',
+    difficulty: 'hard'
+  },
+  {
+    word: 'ENTHUSIASTIC',
+    hint: 'Having or showing intense excitement or interest',
+    options: ['ENTHUSIASTIC', 'ENTHUSIASM', 'ENTHUSIAST', 'ENTHUSIASTS'],
+    correctAnswer: 'ENTHUSIASTIC',
+    difficulty: 'hard'
+  },
+  {
+    word: 'HETEROGENEOUS',
+    hint: 'Diverse in character or content',
+    options: ['HETEROGENEOUS', 'HOMOGENEOUS', 'HETEROGENEITY', 'HETEROGENY'],
+    correctAnswer: 'HETEROGENEOUS',
+    difficulty: 'hard'
+  },
+  {
+    word: 'INCOMPREHENSIBLE',
+    hint: 'Impossible to understand or comprehend',
+    options: ['INCOMPREHENSIBLE', 'INCOMPREHENSION', 'COMPREHENSIBLE', 'COMPREHENSION'],
+    correctAnswer: 'INCOMPREHENSIBLE',
+    difficulty: 'hard'
+  },
+  {
+    word: 'MULTIDISCIPLINARY',
+    hint: 'Combining or involving several academic disciplines',
+    options: ['MULTIDISCIPLINARY', 'MULTIDISCIPLINE', 'DISCIPLINARY', 'INTERDISCIPLINARY'],
+    correctAnswer: 'MULTIDISCIPLINARY',
+    difficulty: 'hard'
+  },
+  {
+    word: 'PHENOMENOLOGICAL',
+    hint: 'Relating to the philosophical study of phenomena',
+    options: ['PHENOMENOLOGICAL', 'PHENOMENOLOGY', 'PHENOMENON', 'PHENOMENA'],
+    correctAnswer: 'PHENOMENOLOGICAL',
+    difficulty: 'hard'
+  },
+  {
+    word: 'QUINCENTENNIAL',
+    hint: 'Relating to a 500th anniversary',
+    options: ['QUINCENTENNIAL', 'CENTENNIAL', 'MILLENNIAL', 'BICENTENNIAL'],
+    correctAnswer: 'QUINCENTENNIAL',
+    difficulty: 'hard'
+  },
+  {
+    word: 'SESQUIPEDALIAN',
+    hint: 'Using long words; polysyllabic',
+    options: ['SESQUIPEDALIAN', 'SESQUIPEDAL', 'PEDAL', 'PEDALIAN'],
+    correctAnswer: 'SESQUIPEDALIAN',
+    difficulty: 'hard'
+  },
+  {
+    word: 'SUPERCALIFRAGILISTICEXPIALIDOCIOUS',
+    hint: 'Extraordinarily good; wonderful (from Mary Poppins)',
+    options: ['SUPERCALIFRAGILISTICEXPIALIDOCIOUS', 'SUPERCALIFRAGILISTIC', 'FRAGILISTICEXPIALIDOCIOUS', 'CALIFRAGILISTIC'],
+    correctAnswer: 'SUPERCALIFRAGILISTICEXPIALIDOCIOUS',
+    difficulty: 'hard'
+  },
+  {
+    word: 'UNCHARACTERISTICALLY',
+    hint: 'In a way that is not typical of a particular person or thing',
+    options: ['UNCHARACTERISTICALLY', 'CHARACTERISTICALLY', 'CHARACTERISTIC', 'CHARACTERISTICS'],
+    correctAnswer: 'UNCHARACTERISTICALLY',
+    difficulty: 'hard'
+  },
+  {
+    word: 'VENTRILOQUIST',
+    hint: 'A person who can speak without moving their lips',
+    options: ['VENTRILOQUIST', 'VENTRILOQUISM', 'VENTRILOQUY', 'VENTRILOQUISM'],
+    correctAnswer: 'VENTRILOQUIST',
     difficulty: 'hard'
   }
 ];

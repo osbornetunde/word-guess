@@ -4,6 +4,7 @@ import { GameScreen } from './components/GameScreen';
 import { Leaderboard } from './components/Leaderboard';
 import type { GameState, GameSettings } from './types/game';
 import { getUniqueWordsForTeams } from './data/words';
+import { GAME_CONFIG } from './constants/gameConfig';
 
 function App() {
   const [gameState, setGameState] = useState<GameState>({
@@ -68,7 +69,7 @@ function App() {
     // Update team score if correct (no points for time up or wrong)
     const updatedTeams = gameState.teams.map((team, index) => {
       if (index === gameState.currentTeamIndex && isCorrect) {
-        return { ...team, score: team.score + 10 };
+        return { ...team, score: team.score + GAME_CONFIG.POINTS_PER_CORRECT_ANSWER };
       }
       return team;
     });

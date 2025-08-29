@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { GameState } from '../types/game';
-import { createMaskedWord } from '../data/words';
-import { useSpeechToText } from '../hooks/useSpeechToText';
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useMemo, useState } from "react";
+import { createMaskedWord } from "../data/words";
+import { useSpeechToText } from "../hooks/useSpeechToText";
+import type { GameState } from "../types/game";
+import { GAME_CONFIG } from "../constants/gameConfig";
 
 interface GameScreenProps {
   gameState: GameState;
@@ -11,21 +12,54 @@ interface GameScreenProps {
   onBackToStart: () => void;
 }
 
+const AnimatedWord: React.FC<{
+  letters: string[];
+  opacities: number[];
+  className?: string;
+}> = ({ letters, opacities, className = "" }) => {
+  return (
+    <div className={`inline-flex ${className}`}>
+      {letters.map((letter, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{
+            opacity: opacities[index] || 0,
+            scale: opacities[index] ? 1 : 0.5
+          }}
+          transition={{
+            duration: 0.6,
+            ease: "easeOut",
+            delay: opacities[index] ? 0 : 0
+          }}
+          className="inline-block"
+        >
+          {letter}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
 // Simple normalization helper
 const normalize = (s: string) =>
   s
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, ' ');
+    .replace(/\s+/g, " ");
 
 // Basic optional length hinting (not enforced)
 const useLengthHint = (targetLen: number | null, value: string) => {
-  if (!targetLen) return { hint: '', ok: true };
-  const diff = targetLen - value.replace(/\s/g, '').length;
-  if (diff === 0) return { hint: 'Perfect length ✅', ok: true };
-  if (diff > 0) return { hint: `${diff} more ${diff === 1 ? 'letter' : 'letters'}`, ok: false };
+  if (!targetLen) return { hint: "", ok: true };
+  const diff = targetLen - value.replace(/\s/g, "").length;
+  if (diff === 0) return { hint: "Perfect length ✅", ok: true };
+  if (diff > 0)
+    return {
+      hint: `${diff} more ${diff === 1 ? "letter" : "letters"}`,
+      ok: false,
+    };
   return { hint: `${Math.abs(diff)} extra`, ok: true };
 };
 
@@ -34,14 +68,14 @@ const TextAnswerInput: React.FC<{
   onSubmit: (val: string) => void;
   expectedLength?: number;
 }> = ({ disabled, onSubmit, expectedLength }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const { hint, ok } = useLengthHint(expectedLength ?? null, value);
 
   const submit = () => {
     const v = normalize(value);
     if (!disabled && v) {
       onSubmit(v);
-      setValue('');
+      setValue("");
     }
   };
 
@@ -61,7 +95,7 @@ const TextAnswerInput: React.FC<{
           onChange={(e) => setValue(e.target.value)}
           placeholder="Type your guess..."
           onKeyDown={(e) => {
-            if (e.key === 'Enter') submit();
+            if (e.key === "Enter") submit();
           }}
           className="px-4 py-3 border-2 border-blue-300 rounded-xl focus:border-blue-500 focus:outline-none text-lg min-w-[260px]"
         />
@@ -76,7 +110,7 @@ const TextAnswerInput: React.FC<{
         </motion.button>
       </div>
       {expectedLength ? (
-        <div className={`text-sm ${ok ? 'text-gray-500' : 'text-amber-600'}`}>
+        <div className={`text-sm ${ok ? "text-gray-500" : "text-amber-600"}`}>
           Expected: {expectedLength} letters • {hint}
         </div>
       ) : null}
@@ -89,9 +123,12 @@ const TilesAnswerInput: React.FC<{
   disabled?: boolean;
   onSubmit: (val: string) => void;
 }> = ({ wordLength, disabled, onSubmit }) => {
-  const [letters, setLetters] = useState<string[]>(Array(wordLength).fill(''));
+  const [letters, setLetters] = useState<string[]>(Array(wordLength).fill(""));
   const refs = useMemo(
-    () => Array.from({ length: wordLength }, () => React.createRef<HTMLInputElement>()),
+    () =>
+      Array.from({ length: wordLength }, () =>
+        React.createRef<HTMLInputElement>()
+      ),
     [wordLength]
   );
 
@@ -100,7 +137,7 @@ const TilesAnswerInput: React.FC<{
   }, [wordLength, refs]);
 
   const setAt = (i: number, val: string) => {
-    const c = val.slice(-1).replace(/[^a-zA-Z]/g, '');
+    const c = val.slice(-1).replace(/[^a-zA-Z]/g, "");
     const next = [...letters];
     next[i] = c.toLowerCase();
     setLetters(next);
@@ -109,26 +146,26 @@ const TilesAnswerInput: React.FC<{
     }
     // Auto submit if last box filled
     if (c && i === wordLength - 1) {
-      const guess = next.join('');
+      const guess = next.join("");
       if (guess.length === wordLength) onSubmit(normalize(guess));
     }
   };
 
   const handleKey = (i: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace') {
+    if (e.key === "Backspace") {
       if (letters[i]) {
         const next = [...letters];
-        next[i] = '';
+        next[i] = "";
         setLetters(next);
       } else if (i > 0) {
         refs[i - 1]?.current?.focus();
       }
-    } else if (e.key === 'ArrowLeft' && i > 0) {
+    } else if (e.key === "ArrowLeft" && i > 0) {
       refs[i - 1]?.current?.focus();
-    } else if (e.key === 'ArrowRight' && i < wordLength - 1) {
+    } else if (e.key === "ArrowRight" && i < wordLength - 1) {
       refs[i + 1]?.current?.focus();
-    } else if (e.key === 'Enter') {
-      const guess = letters.join('');
+    } else if (e.key === "Enter") {
+      const guess = letters.join("");
       if (guess.trim().length === wordLength) onSubmit(normalize(guess));
     }
   };
@@ -136,8 +173,8 @@ const TilesAnswerInput: React.FC<{
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const paste = e.clipboardData
-      .getData('text')
-      .replace(/[^a-zA-Z]/g, '')
+      .getData("text")
+      .replace(/[^a-zA-Z]/g, "")
       .slice(0, wordLength)
       .toLowerCase();
     const next = [...letters];
@@ -147,7 +184,7 @@ const TilesAnswerInput: React.FC<{
   };
 
   const clearAll = () => {
-    setLetters(Array(wordLength).fill(''));
+    setLetters(Array(wordLength).fill(""));
     refs[0]?.current?.focus();
   };
 
@@ -174,10 +211,10 @@ const TilesAnswerInput: React.FC<{
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
-            const guess = letters.join('');
+            const guess = letters.join("");
             if (guess.trim().length === wordLength) onSubmit(normalize(guess));
           }}
-          disabled={disabled || letters.join('').length !== wordLength}
+          disabled={disabled || letters.join("").length !== wordLength}
           className="px-6 py-3 bg-purple-600 text-white rounded-xl font-bold disabled:opacity-50"
         >
           Submit
@@ -200,16 +237,10 @@ const VoiceAnswerInput: React.FC<{
   disabled?: boolean;
   onSubmit: (val: string) => void;
 }> = ({ disabled, onSubmit }) => {
-  const [lang, setLang] = useState('en-US');
-  const {
-    isListening,
-    transcript,
-    error,
-    start,
-    stop,
-    supported,
-  } = useSpeechToText({ lang });
-  const [editedTranscript, setEditedTranscript] = useState('');
+  const [lang, setLang] = useState("en-US");
+  const { isListening, transcript, error, start, stop, supported } =
+    useSpeechToText({ lang });
+  const [editedTranscript, setEditedTranscript] = useState("");
 
   useEffect(() => {
     if (transcript) {
@@ -221,7 +252,7 @@ const VoiceAnswerInput: React.FC<{
     const v = normalize(editedTranscript);
     if (!disabled && v) {
       onSubmit(v);
-      setEditedTranscript('');
+      setEditedTranscript("");
     }
   };
 
@@ -229,7 +260,8 @@ const VoiceAnswerInput: React.FC<{
     <div className="flex flex-col items-center gap-3">
       {!supported && (
         <div className="text-sm text-red-600">
-          Voice input is not supported in this browser. Please use Text or Tiles mode.
+          Voice input is not supported in this browser. Please use Text or Tiles
+          mode.
         </div>
       )}
       {error && (
@@ -257,10 +289,10 @@ const VoiceAnswerInput: React.FC<{
           disabled={disabled || !supported}
           onClick={isListening ? stop : start}
           className={`px-6 py-3 rounded-xl font-bold text-white ${
-            isListening ? 'bg-red-600 animate-pulse' : 'bg-green-600'
+            isListening ? "bg-red-600 animate-pulse" : "bg-green-600"
           } disabled:opacity-50`}
         >
-          {isListening ? 'Stop Listening 🎙️' : 'Start Listening 🎙️'}
+          {isListening ? "Stop Listening 🎙️" : "Start Listening 🎙️"}
         </motion.button>
       </div>
       {isListening && (
@@ -290,7 +322,7 @@ const VoiceAnswerInput: React.FC<{
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
-            setEditedTranscript('');
+            setEditedTranscript("");
           }}
           disabled={disabled}
           className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50"
@@ -306,24 +338,27 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   gameState,
   onAnswerSelected,
   onNextTurn,
-  onBackToStart
+  onBackToStart,
 }) => {
   const [hintVisible, setHintVisible] = useState(false);
-  const [hintTimeLeft, setHintTimeLeft] = useState(5);
-  const [gameTimeLeft, setGameTimeLeft] = useState(20);
+  const [hintTimeLeft, setHintTimeLeft] = useState<number>(GAME_CONFIG.HINT_DURATION);
+  const [gameTimeLeft, setGameTimeLeft] = useState<number>(GAME_CONFIG.GAME_DURATION);
   const [showResult, setShowResult] = useState(false);
   const [answerRevealed, setAnswerRevealed] = useState(false);
+  const [revealingLetters, setRevealingLetters] = useState<string[]>([]);
+  const [letterOpacities, setLetterOpacities] = useState<number[]>([]);
+  const [isRevealing, setIsRevealing] = useState(false);
 
   const currentTeam = gameState.teams[gameState.currentTeamIndex];
   const currentWord = gameState.words[gameState.currentWordIndex];
-  const maskedWord = useMemo(() => createMaskedWord(currentWord.word), [currentWord.word]);
+  const maskedWord = useMemo(
+    () => createMaskedWord(currentWord.word),
+    [currentWord.word]
+  );
 
   // Handle hint timer
   useEffect(() => {
-    if (gameState.showHint && !showResult) {
-      setHintVisible(true);
-      setHintTimeLeft(5);
-      
+    if (hintVisible && !showResult) {
       const timer = setInterval(() => {
         setHintTimeLeft((prev) => {
           if (prev <= 1) {
@@ -337,12 +372,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
       return () => clearInterval(timer);
     }
-  }, [gameState.showHint, showResult]);
+  }, [hintVisible, showResult]);
 
-  // Handle 20-second game timer with auto reveal and scoring (0 on timeout)
+  // Handle game timer with auto reveal and scoring (0 on timeout)
   useEffect(() => {
     if (!showResult && !answerRevealed && gameState.selectedAnswer === null) {
-      setGameTimeLeft(20);
+      setGameTimeLeft(GAME_CONFIG.GAME_DURATION);
 
       const timer = setInterval(() => {
         setGameTimeLeft((prev) => {
@@ -350,7 +385,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             clearInterval(timer);
             // Only submit if no answer yet
             if (gameState.selectedAnswer === null) {
-              onAnswerSelected('');
+              onAnswerSelected("");
             }
             setAnswerRevealed(true);
             setShowResult(true);
@@ -362,21 +397,59 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
       return () => clearInterval(timer);
     }
-  }, [gameState.currentWordIndex, gameState.currentTeamIndex, showResult, answerRevealed, gameState.selectedAnswer, onAnswerSelected]);
+  }, [
+    gameState.currentWordIndex,
+    gameState.currentTeamIndex,
+    showResult,
+    answerRevealed,
+    gameState.selectedAnswer,
+    onAnswerSelected,
+  ]);
 
   // Reset reveal state when moving to a new word
   useEffect(() => {
     setShowResult(false);
     setAnswerRevealed(false);
     setHintVisible(false);
-    setGameTimeLeft(20);
+    setHintTimeLeft(GAME_CONFIG.HINT_DURATION);
+    setGameTimeLeft(GAME_CONFIG.GAME_DURATION);
+    setRevealingLetters([]);
+    setLetterOpacities([]);
+    setIsRevealing(false);
   }, [gameState.currentWordIndex, gameState.currentTeamIndex]);
 
   const handleRevealAnswer = () => {
     if (!answerRevealed) {
       setAnswerRevealed(true);
       setShowResult(true);
+      startLetterReveal();
     }
+  };
+
+  const startLetterReveal = () => {
+    const word = currentWord.correctAnswer;
+    const wordArray = word.split("");
+
+    // Start with all letters visible but with 0 opacity for animation
+    setRevealingLetters(wordArray);
+    setLetterOpacities(new Array(wordArray.length).fill(0));
+    setIsRevealing(true);
+
+    let currentIndex = 0;
+    const revealInterval = setInterval(() => {
+      if (currentIndex < wordArray.length) {
+        // Animate each letter in sequence
+        setLetterOpacities((prevOpacities) => {
+          const newOpacities = [...prevOpacities];
+          newOpacities[currentIndex] = 1;
+          return newOpacities;
+        });
+        currentIndex++;
+      } else {
+        clearInterval(revealInterval);
+        setIsRevealing(false);
+      }
+    }, 250); // Reveal one letter every 250ms for more dramatic effect
   };
 
   // When an answer is submitted (from any mode), stop timer and show result
@@ -384,13 +457,19 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     if (gameState.selectedAnswer !== null) {
       setShowResult(true);
       setAnswerRevealed(true);
+      // Start letter reveal animation
+      startLetterReveal();
     }
   }, [gameState.selectedAnswer]);
 
   const handleNextTurn = () => {
     setShowResult(false);
     setHintVisible(false);
+    setHintTimeLeft(GAME_CONFIG.HINT_DURATION);
     setAnswerRevealed(false);
+    setRevealingLetters([]);
+    setLetterOpacities([]);
+    setIsRevealing(false);
     onNextTurn();
   };
 
@@ -418,25 +497,38 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 <h2 className="text-2xl font-bold text-gray-800 funky-text">
                   {currentTeam.name}'s Turn
                 </h2>
-                <p className="text-gray-600">Score: {currentTeam.score} points</p>
+                <p className="text-gray-600">
+                  Score: {currentTeam.score} points
+                </p>
               </div>
             </div>
             <div className="text-right">
               <p className="text-lg font-semibold text-gray-700">
-                Word {gameState.currentWordIndex + 1} of {gameState.words.length}
+                Word {gameState.currentWordIndex + 1} of{" "}
+                {gameState.words.length}
               </p>
               <div className="w-48 bg-gray-200 rounded-full h-2 mt-2">
                 <div
                   className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
                   style={{
-                    width: `${((gameState.currentWordIndex + 1) / gameState.words.length) * 100}%`
+                    width: `${
+                      ((gameState.currentWordIndex + 1) /
+                        gameState.words.length) *
+                      100
+                    }%`,
                   }}
                 />
               </div>
               {/* Game Timer - moved to be less intrusive */}
               {!showResult && !answerRevealed && (
                 <div className="mt-3">
-                  <div className={`text-lg font-semibold ${gameTimeLeft <= 5 ? 'text-red-600 animate-pulse' : 'text-gray-600'}`}>
+                  <div
+                    className={`text-lg font-semibold ${
+                      gameTimeLeft <= 5
+                        ? "text-red-600 animate-pulse"
+                        : "text-gray-600"
+                    }`}
+                  >
                     {gameTimeLeft}s
                   </div>
                   <div className="text-xs text-gray-400">remaining</div>
@@ -462,7 +554,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
           {/* Next team indicator */}
           {!showResult && (
             <div className="text-center text-sm text-gray-500">
-              Next up: <span className="font-semibold">{getNextTeam().name}</span>
+              Next up:{" "}
+              <span className="font-semibold">{getNextTeam().name}</span>
             </div>
           )}
         </motion.div>
@@ -478,7 +571,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center funky-text">
               Guess the Word! 🤔
             </h3>
-            
+
             <motion.div
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
@@ -486,29 +579,82 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               className="text-center mb-8"
             >
               <div className="text-4xl font-bold text-gray-800 tracking-wider mb-4 font-mono bg-gray-100 p-6 rounded-xl">
-                {maskedWord}
+                {answerRevealed && gameState.isAnswerCorrect === false ? (
+                  isRevealing ? (
+                    <AnimatedWord
+                      letters={revealingLetters}
+                      opacities={letterOpacities}
+                      className="justify-center"
+                    />
+                  ) : (
+                    <AnimatedWord
+                      letters={currentWord.correctAnswer.split("")}
+                      opacities={new Array(currentWord.correctAnswer.length).fill(1)}
+                      className="justify-center"
+                    />
+                  )
+                ) : (
+                  maskedWord
+                )}
               </div>
               <div className="text-lg text-gray-600 classic-text">
-                {currentWord.word.length} letters
+                {currentWord.correctAnswer.replace(/\s+/g, "").length} letters
               </div>
+              {answerRevealed && gameState.isAnswerCorrect === false && isRevealing && (
+                <div className="text-sm text-blue-600 mt-2 animate-pulse">
+                  Revealing the answer...
+                </div>
+              )}
             </motion.div>
 
             {/* Hint display */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {hintVisible && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="bg-yellow-100 border-2 border-yellow-300 rounded-xl p-4 mb-6"
+                  key="hint"
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{
+                    opacity: 0,
+                    y: -20,
+                    scale: 0.95,
+                    transition: { duration: 0.4, ease: "easeInOut" }
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeOut",
+                    layout: { duration: 0.2 }
+                  }}
+                  layout
+                  className="bg-yellow-100 border-2 border-yellow-300 rounded-xl p-4 mb-6 overflow-hidden"
                 >
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-bold text-yellow-800 funky-text">💡 Hint:</h4>
-                    <div className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1, duration: 0.3 }}
+                    className="flex justify-between items-center mb-2"
+                  >
+                    <h4 className="font-bold text-yellow-800 funky-text">
+                      💡 Hint:
+                    </h4>
+                    <motion.div
+                      key={hintTimeLeft}
+                      initial={{ scale: 1.2, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.2 }}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold"
+                    >
                       {hintTimeLeft}s
-                    </div>
-                  </div>
-                  <p className="text-yellow-800 classic-text">{currentWord.hint}</p>
+                    </motion.div>
+                  </motion.div>
+                  <motion.p
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}
+                    className="text-yellow-800 classic-text"
+                  >
+                    {currentWord.hint}
+                  </motion.p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -520,10 +666,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setHintVisible(true)}
+                    onClick={() => {
+                      setHintVisible(true);
+                      setHintTimeLeft(GAME_CONFIG.HINT_DURATION);
+                    }}
                     className="bg-yellow-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-yellow-600 transition-colors"
                   >
-                    Show Hint (5s) 💡
+                    Show Hint ({GAME_CONFIG.HINT_DURATION}s) 💡
                   </motion.button>
                 )}
                 {!answerRevealed && (
@@ -547,15 +696,17 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             className="bg-white rounded-2xl shadow-xl p-8"
           >
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center funky-text">
-              {answerRevealed ? 'Answer 🔍' : 'Your Guess 🎯'}
+              {answerRevealed ? "Answer 🔍" : "Your Guess 🎯"}
             </h3>
 
             {!answerRevealed && (
               <div className="mb-6">
-                {gameState.answerMode === 'text' && (
+                {gameState.answerMode === "text" && (
                   <TextAnswerInput
                     disabled={answerRevealed}
-                    expectedLength={currentWord.correctAnswer.replace(/\s+/g, '').length}
+                    expectedLength={
+                      currentWord.correctAnswer.replace(/\s+/g, "").length
+                    }
                     onSubmit={(val) => {
                       // Normalize both sides to be safe
                       const guess = normalize(val);
@@ -567,9 +718,11 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   />
                 )}
 
-                {gameState.answerMode === 'tiles' && (
+                {gameState.answerMode === "tiles" && (
                   <TilesAnswerInput
-                    wordLength={currentWord.correctAnswer.replace(/\s+/g, '').length}
+                    wordLength={
+                      currentWord.correctAnswer.replace(/\s+/g, "").length
+                    }
                     disabled={answerRevealed}
                     onSubmit={(val) => {
                       const guess = normalize(val);
@@ -580,7 +733,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   />
                 )}
 
-                {gameState.answerMode === 'voice' && (
+                {gameState.answerMode === "voice" && (
                   <VoiceAnswerInput
                     disabled={answerRevealed}
                     onSubmit={(val) => {
@@ -596,20 +749,59 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
             <div className="text-center">
               {!answerRevealed ? (
-                <div className="text-gray-500">Submit your guess above, press "Show Answer", or wait for the timer.</div>
+                <div className="text-gray-500">
+                  Submit your guess above, press "Show Answer", or wait for the
+                  timer.
+                </div>
               ) : (
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-green-50 border-2 border-green-200 rounded-xl p-6"
+                  className={`${
+                    gameState.isAnswerCorrect === false
+                      ? "bg-red-50 border-2 border-red-200"
+                      : "bg-green-50 border-2 border-green-200"
+                  } rounded-xl p-6`}
                 >
-                  <div className="text-5xl mb-2">✅</div>
-                  <h4 className="text-2xl font-bold text-green-800 funky-text mb-2">
-                    The answer is:
+                  <div className="text-5xl mb-2">
+                    {gameState.isAnswerCorrect === false ? "❌" : "✅"}
+                  </div>
+                  <h4 className="text-2xl font-bold funky-text mb-2">
+                    {gameState.isAnswerCorrect === false
+                      ? gameState.selectedAnswer === null
+                        ? "Time's up! ⏰"
+                        : "Wrong answer! 😞"
+                      : "Correct! 🎉"}
                   </h4>
-                  <p className="text-3xl font-extrabold text-green-700 tracking-wider">
-                    {currentWord.correctAnswer}
-                  </p>
+                  {gameState.isAnswerCorrect === false && (
+                    <div className="mb-4">
+                      <p className="text-lg text-gray-600 mb-2">
+                        {gameState.selectedAnswer === null
+                          ? "You ran out of time. The answer was:"
+                          : `You guessed: "${gameState.selectedAnswer}". The correct answer is:`}
+                      </p>
+                    </div>
+                  )}
+                  <div className="text-3xl font-extrabold tracking-wider mb-4 font-mono">
+                    {isRevealing ? (
+                      <AnimatedWord
+                        letters={revealingLetters}
+                        opacities={letterOpacities}
+                        className="justify-center"
+                      />
+                    ) : (
+                      <AnimatedWord
+                        letters={currentWord.correctAnswer.split("")}
+                        opacities={new Array(currentWord.correctAnswer.length).fill(1)}
+                        className="justify-center"
+                      />
+                    )}
+                  </div>
+                  {gameState.isAnswerCorrect === false && (
+                    <div className="text-sm text-gray-500">
+                      {isRevealing ? "Revealing the answer..." : "Answer revealed!"}
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -628,9 +820,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                       className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:shadow-lg transition-all"
                     >
                       {gameState.currentWordIndex < gameState.words.length - 1
-                        ? 'Next Turn →'
-                        : 'View Results 🏆'
-                      }
+                        ? "Next Turn →"
+                        : "View Results 🏆"}
                     </motion.button>
                   </motion.div>
                 )}
@@ -655,8 +846,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 whileHover={{ scale: 1.05 }}
                 className={`p-3 rounded-xl text-center ${
                   team.id === currentTeam.id
-                    ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
-                    : 'bg-gray-100'
+                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg"
+                    : "bg-gray-100"
                 }`}
               >
                 <div
