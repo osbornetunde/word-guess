@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  font-family: 'Comic Neue', cursive;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.funky-text {
+  font-family: 'Comic Neue', cursive;
+}
+
+.classic-text {
+  font-family: 'Playfair Display', serif;
+}
