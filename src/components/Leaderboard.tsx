@@ -233,7 +233,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ teams, onPlayAgain }) 
             whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
             whileTap={{ scale: 0.95 }}
             onClick={onPlayAgain}
-            className="px-8 py-4 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
+            className="px-8 py-4 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all cursor-pointer"
           >
             Play Again 🔄
           </motion.button>
@@ -242,7 +242,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ teams, onPlayAgain }) 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => window.location.reload()}
-            className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all"
+            className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all cursor-pointer"
           >
             New Game 🎮
           </motion.button>

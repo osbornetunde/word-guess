@@ -100,7 +100,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
                 whileTap={{ scale: 0.95 }}
                 onClick={addTeam}
                 disabled={!newTeamName.trim() || teams.length >= 20}
-                className="px-6 py-3 bg-purple-500 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-600 transition-colors"
+                className="px-6 py-3 bg-purple-500 text-white rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-600 transition-colors cursor-pointer"
               >
                 Add
               </motion.button>
@@ -135,7 +135,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => removeTeam(team.id)}
-                      className="text-red-500 hover:text-red-700 font-bold text-xl"
+                      className="text-red-500 hover:text-red-700 font-bold text-xl cursor-pointer"
                     >
                       ×
                     </motion.button>
@@ -168,7 +168,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setDifficulty(level)}
-                    className={`p-3 rounded-xl font-bold capitalize transition-all ${
+                    className={`p-3 rounded-xl font-bold capitalize transition-all cursor-pointer ${
                       difficulty === level
                         ? 'bg-blue-500 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -216,7 +216,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setAnswerMode(mode)}
-                    className={`p-3 rounded-xl font-bold capitalize transition-all ${
+                    className={`p-3 rounded-xl font-bold capitalize transition-all cursor-pointer ${
                       answerMode === mode
                         ? 'bg-purple-500 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -259,7 +259,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
             whileTap={{ scale: 0.95 }}
             onClick={handleStartGame}
             disabled={teams.length < 2}
-            className={`px-12 py-4 rounded-2xl font-bold text-xl transition-all ${
+            className={`px-12 py-4 rounded-2xl font-bold text-xl transition-all cursor-pointer ${
               teams.length >= 2
                 ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white shadow-lg hover:shadow-xl'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'

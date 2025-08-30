@@ -104,7 +104,7 @@ const TextAnswerInput: React.FC<{
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           disabled={disabled || !value.trim()}
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50"
+          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
           Submit
         </motion.button>
@@ -215,7 +215,7 @@ const TilesAnswerInput: React.FC<{
             if (guess.trim().length === wordLength) onSubmit(normalize(guess));
           }}
           disabled={disabled || letters.join("").length !== wordLength}
-          className="px-6 py-3 bg-purple-600 text-white rounded-xl font-bold disabled:opacity-50"
+          className="px-6 py-3 bg-purple-600 text-white rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
           Submit
         </motion.button>
@@ -224,7 +224,7 @@ const TilesAnswerInput: React.FC<{
           whileTap={{ scale: 0.95 }}
           onClick={clearAll}
           disabled={disabled}
-          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50"
+          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
           Clear
         </motion.button>
@@ -290,7 +290,7 @@ const VoiceAnswerInput: React.FC<{
           onClick={isListening ? stop : start}
           className={`px-6 py-3 rounded-xl font-bold text-white ${
             isListening ? "bg-red-600 animate-pulse" : "bg-green-600"
-          } disabled:opacity-50`}
+          } disabled:opacity-50 cursor-pointer`}
         >
           {isListening ? "Stop Listening 🎙️" : "Start Listening 🎙️"}
         </motion.button>
@@ -314,7 +314,7 @@ const VoiceAnswerInput: React.FC<{
           whileTap={{ scale: 0.95 }}
           onClick={submit}
           disabled={disabled || !editedTranscript.trim()}
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50"
+          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
           Submit
         </motion.button>
@@ -325,7 +325,7 @@ const VoiceAnswerInput: React.FC<{
             setEditedTranscript("");
           }}
           disabled={disabled}
-          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50"
+          className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
           Clear
         </motion.button>
@@ -543,7 +543,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     setShowResult(false);
                     onBackToStart();
                   }}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300"
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 cursor-pointer"
                 >
                   ← Back to Start
                 </motion.button>
@@ -670,7 +670,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                       setHintVisible(true);
                       setHintTimeLeft(GAME_CONFIG.HINT_DURATION);
                     }}
-                    className="bg-yellow-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-yellow-600 transition-colors"
+                    className="bg-yellow-500 text-white px-6 py-3 rounded-xl font-bold hover:bg-yellow-600 transition-colors cursor-pointer"
                   >
                     Show Hint ({GAME_CONFIG.HINT_DURATION}s) 💡
                   </motion.button>
@@ -680,7 +680,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleRevealAnswer}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors cursor-pointer"
                   >
                     Show Answer ✅
                   </motion.button>
@@ -817,7 +817,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={handleNextTurn}
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:shadow-lg transition-all"
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:shadow-lg transition-all cursor-pointer"
                     >
                       {gameState.currentWordIndex < gameState.words.length - 1
                         ? "Next Turn →"
