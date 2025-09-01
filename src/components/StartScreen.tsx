@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Team, GameSettings, AnswerMode } from '../types/game';
-import { TEAM_COLORS } from '../types/game';
-import { GAME_CONFIG } from '../constants/gameConfig';
+import { TEAM_COLORS, GAME_CONFIG } from '../constants/gameConfig';
 
 interface StartScreenProps {
   onStartGame: (settings: GameSettings) => void;
