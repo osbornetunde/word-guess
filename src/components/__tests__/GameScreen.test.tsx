@@ -80,12 +80,6 @@ describe("GameScreen", () => {
     answerMode: "text",
   };
 
-  beforeEach(() => {
-    mockOnAnswerSelected.mockClear();
-    mockOnNextTurn.mockClear();
-    mockOnBackToStart.mockClear();
-  });
-
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -97,7 +91,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Team Alpha's Turn")).toBeInTheDocument();
@@ -113,7 +107,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Should show masked word (all underscores based on our mock)
@@ -128,7 +122,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("50s")).toBeInTheDocument();
@@ -142,7 +136,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Show Hint (5s) 💡")).toBeInTheDocument();
@@ -156,7 +150,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const hintButton = screen.getByText("Show Hint (5s) 💡");
@@ -166,10 +160,10 @@ describe("GameScreen", () => {
       () => {
         expect(screen.getByText("💡 Hint:")).toBeInTheDocument();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
     expect(
-      screen.getByText("Large gray mammal with a trunk")
+      screen.getByText("Large gray mammal with a trunk"),
     ).toBeInTheDocument();
   });
 
@@ -182,7 +176,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const hintButton = screen.getByText("Show Hint (5s) 💡");
@@ -196,7 +190,7 @@ describe("GameScreen", () => {
     // Should show initial countdown
     expect(screen.getByText("5s")).toBeInTheDocument();
     expect(
-      screen.getByText("Large gray mammal with a trunk")
+      screen.getByText("Large gray mammal with a trunk"),
     ).toBeInTheDocument();
   });
 
@@ -207,7 +201,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Show Answer ✅")).toBeInTheDocument();
@@ -221,7 +215,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const revealButton = screen.getByText("Show Answer ✅");
@@ -238,11 +232,11 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(
-      screen.getByPlaceholderText("Type your guess...")
+      screen.getByPlaceholderText("Type your guess..."),
     ).toBeInTheDocument();
     expect(screen.getByText("Submit")).toBeInTheDocument();
   });
@@ -255,7 +249,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const input = screen.getByPlaceholderText("Type your guess...");
@@ -275,7 +269,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const input = screen.getByPlaceholderText("Type your guess...");
@@ -293,7 +287,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Should show 8 input tiles (one for each letter)
@@ -311,7 +305,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const inputs = screen.getAllByRole("textbox");
@@ -337,14 +331,14 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Start Listening 🎙️")).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(
-        "Say your guess… you can edit before submitting."
-      )
+        "Say your guess… you can edit before submitting.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -361,7 +355,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Next Turn →")).toBeInTheDocument();
@@ -381,7 +375,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("View Results 🏆")).toBeInTheDocument();
@@ -401,7 +395,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // The result should be displayed
@@ -426,7 +420,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("✅")).toBeInTheDocument();
@@ -446,13 +440,13 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("❌")).toBeInTheDocument();
     expect(screen.getByText("Wrong answer! 😞")).toBeInTheDocument();
     expect(
-      screen.getByText('You guessed: "TIGER". The correct answer is:')
+      screen.getByText('You guessed: "TIGER". The correct answer is:'),
     ).toBeInTheDocument();
   });
 
@@ -470,7 +464,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Current Scores 📊")).toBeInTheDocument();
@@ -489,7 +483,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Current team should have gradient background
@@ -505,7 +499,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Next up:")).toBeInTheDocument();
@@ -522,7 +516,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const backButton = screen.getByText("← Back to Start");
@@ -544,7 +538,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Should show initial timer
@@ -560,7 +554,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const input = screen.getByPlaceholderText("Type your guess...");
@@ -578,12 +572,12 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Should show text input
     expect(
-      screen.getByPlaceholderText("Type your guess...")
+      screen.getByPlaceholderText("Type your guess..."),
     ).toBeInTheDocument();
 
     // Switch to tiles mode
@@ -594,7 +588,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     // Should show tile inputs
@@ -609,7 +603,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("8 letters")).toBeInTheDocument();
@@ -623,7 +617,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Word 1 of 2")).toBeInTheDocument();
@@ -637,7 +631,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     const input = screen.getByPlaceholderText("Type your guess...");
@@ -661,7 +655,7 @@ describe("GameScreen", () => {
         onAnswerSelected={mockOnAnswerSelected}
         onNextTurn={mockOnNextTurn}
         onBackToStart={mockOnBackToStart}
-      />
+      />,
     );
 
     expect(screen.getByText("Team Alpha's Turn")).toBeInTheDocument();
