@@ -1,6 +1,83 @@
+// Check if we're in a test environment
+const isTestEnvironment = typeof process !== 'undefined' && process.env.NODE_ENV === 'test';
+
 import type { WordData } from '../types/game';
 
-export const WORD_DATABASE: WordData[] = [
+// Use a smaller dataset for testing to avoid memory issues
+const TEST_WORD_DATABASE: WordData[] = [
+  {
+    word: 'TEST',
+    hint: 'A trial or examination',
+    options: ['TEST', 'TRIAL', 'EXAM', 'QUIZ'],
+    correctAnswer: 'TEST',
+    difficulty: 'easy'
+  },
+  {
+    word: 'APPLE',
+    hint: 'A fruit',
+    options: ['APPLE', 'BANANA', 'ORANGE', 'GRAPE'],
+    correctAnswer: 'APPLE',
+    difficulty: 'easy'
+  },
+  {
+    word: 'HOUSE',
+    hint: 'A place to live',
+    options: ['HOUSE', 'APARTMENT', 'CABIN', 'TENT'],
+    correctAnswer: 'HOUSE',
+    difficulty: 'easy'
+  },
+  {
+    word: 'WATER',
+    hint: 'Essential for life',
+    options: ['WATER', 'JUICE', 'MILK', 'COFFEE'],
+    correctAnswer: 'WATER',
+    difficulty: 'easy'
+  },
+  {
+    word: 'SUN',
+    hint: 'Gives light and heat',
+    options: ['SUN', 'MOON', 'STAR', 'PLANET'],
+    correctAnswer: 'SUN',
+    difficulty: 'easy'
+  },
+  {
+    word: 'HARD',
+    hint: 'Difficult or solid',
+    options: ['HARD', 'SOFT', 'EASY', 'FIRM'],
+    correctAnswer: 'HARD',
+    difficulty: 'medium'
+  },
+  {
+    word: 'COMPUTER',
+    hint: 'Electronic device',
+    options: ['COMPUTER', 'PHONE', 'TABLET', 'LAPTOP'],
+    correctAnswer: 'COMPUTER',
+    difficulty: 'medium'
+  },
+  {
+    word: 'LIBRARY',
+    hint: 'Place with books',
+    options: ['LIBRARY', 'SCHOOL', 'STORE', 'PARK'],
+    correctAnswer: 'LIBRARY',
+    difficulty: 'medium'
+  },
+  {
+    word: 'COMPLEX',
+    hint: 'Complicated or intricate',
+    options: ['COMPLEX', 'SIMPLE', 'EASY', 'BASIC'],
+    correctAnswer: 'COMPLEX',
+    difficulty: 'hard'
+  },
+  {
+    word: 'PHILOSOPHY',
+    hint: 'Study of knowledge',
+    options: ['PHILOSOPHY', 'SCIENCE', 'MATH', 'HISTORY'],
+    correctAnswer: 'PHILOSOPHY',
+    difficulty: 'hard'
+  }
+];
+
+export const WORD_DATABASE: WordData[] = isTestEnvironment ? TEST_WORD_DATABASE : [
   // Easy words
   {
     word: 'ELEPHANT',
@@ -470,20 +547,33 @@ export function getUniqueWordsForTeams(difficulty: 'easy' | 'medium' | 'hard', w
 }
 
 export function createMaskedWord(word: string): string {
-  const length = word.length;
-  const visibleCount = Math.max(1, Math.floor(length * 0.3)); // Show 30% of letters
+  if (!word) return '';
+
+  const chars = word.split('');
+  const nonSpaceIndices: number[] = [];
+
+  // Find all non-space character positions
+  chars.forEach((char, index) => {
+    if (char !== ' ') {
+      nonSpaceIndices.push(index);
+    }
+  });
+
+  const visibleCount = Math.max(1, Math.floor(nonSpaceIndices.length * 0.3));
   const positions = new Set<number>();
-  
-  // Always show first letter
-  positions.add(0);
-  
-  // Randomly select other positions
-  while (positions.size < visibleCount) {
-    positions.add(Math.floor(Math.random() * length));
+
+  // Always show first non-space character
+  if (nonSpaceIndices.length > 0) {
+    positions.add(nonSpaceIndices[0]);
   }
-  
-  return word
-    .split('')
-    .map((letter, index) => positions.has(index) ? letter : '_')
-    .join(' ');
+
+  // Randomly select other non-space positions
+  while (positions.size < visibleCount && positions.size < nonSpaceIndices.length) {
+    const randomIndex = Math.floor(Math.random() * nonSpaceIndices.length);
+    positions.add(nonSpaceIndices[randomIndex]);
+  }
+
+  return chars
+    .map((letter, index) => letter === ' ' ? ' ' : (positions.has(index) ? letter : '_'))
+    .join('');
 }

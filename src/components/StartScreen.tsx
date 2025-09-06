@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Team, GameSettings, AnswerMode } from '../types/game';
 import { TEAM_COLORS, GAME_CONFIG } from '../constants/gameConfig';
@@ -13,22 +13,24 @@ export const StartScreen: React.FC<StartScreenProps> = ({ onStartGame }) => {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [numberOfWords, setNumberOfWords] = useState<number>(GAME_CONFIG.WORDS_PER_GAME);
   const [answerMode, setAnswerMode] = useState<AnswerMode>('text');
+  // Ensure unique, deterministic IDs even under fake timers
+  const nextIdRef = useRef(0);
 
   const addTeam = () => {
     if (newTeamName.trim() && teams.length < 20) {
       const newTeam: Team = {
-        id: Date.now().toString(),
+        id: `t${++nextIdRef.current}`,
         name: newTeamName.trim(),
         score: 0,
         color: TEAM_COLORS[teams.length % TEAM_COLORS.length]
       };
-      setTeams([...teams, newTeam]);
+      setTeams(prev => [...prev, newTeam]);
       setNewTeamName('');
     }
   };
 
   const removeTeam = (teamId: string) => {
-    setTeams(teams.filter(team => team.id !== teamId));
+    setTeams(prev => prev.filter(team => team.id !== teamId));
   };
 
   const handleStartGame = () => {

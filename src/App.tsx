@@ -49,7 +49,7 @@ function App() {
     });
   };
 
-  const handleAnswerSelected = useCallback((answer: string) => {
+    const handleAnswerSelected = (answer: string) => {
     const normalize = (s: string) =>
       s
         .normalize('NFD')
@@ -81,7 +81,7 @@ function App() {
       isAnswerCorrect: isTimeUp ? false : isCorrect,
       showHint: false
     }));
-  }, [gameState.words, gameState.currentWordIndex, gameState.teams, gameState.currentTeamIndex]);
+  };
 
   const handleNextTurn = () => {
     const nextTeamIndex = (gameState.currentTeamIndex + 1) % gameState.teams.length;
