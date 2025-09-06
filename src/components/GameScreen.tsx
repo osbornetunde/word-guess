@@ -1,11 +1,15 @@
-import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { GAME_CONFIG } from "../constants/gameConfig";
 import { createMaskedWord } from "../data/words";
 import { useSpeechToText } from "../hooks/useSpeechToText";
 import type { GameState } from "../types/game";
-import { GAME_CONFIG } from "../constants/gameConfig";
-
-
 
 interface GameScreenProps {
   gameState: GameState;
@@ -13,7 +17,6 @@ interface GameScreenProps {
   onNextTurn: () => void;
   onBackToStart: () => void;
 }
-
 
 const AnimatedWord: React.FC<{
   letters: string[];
@@ -28,12 +31,12 @@ const AnimatedWord: React.FC<{
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{
             opacity: opacities[index] || 0,
-            scale: opacities[index] ? 1 : 0.5
+            scale: opacities[index] ? 1 : 0.5,
           }}
           transition={{
             duration: 0.6,
             ease: "easeOut",
-            delay: opacities[index] ? 0 : 0
+            delay: opacities[index] ? 0 : 0,
           }}
           className="inline-block"
         >
@@ -104,8 +107,8 @@ const TextAnswerInput: React.FC<{
         />
         <motion.button
           type="submit"
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           disabled={disabled || !value.trim()}
           className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50 cursor-pointer"
         >
@@ -130,9 +133,9 @@ const TilesAnswerInput: React.FC<{
   const refs = useMemo(
     () =>
       Array.from({ length: wordLength }, () =>
-        React.createRef<HTMLInputElement>()
+        React.createRef<HTMLInputElement>(),
       ),
-    [wordLength]
+    [wordLength],
   );
 
   useEffect(() => {
@@ -211,8 +214,8 @@ const TilesAnswerInput: React.FC<{
       </div>
       <div className="flex gap-2">
         <motion.button
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => {
             const guess = letters.join("");
             if (guess.trim().length === wordLength) onSubmit(normalize(guess));
@@ -223,8 +226,8 @@ const TilesAnswerInput: React.FC<{
           Submit
         </motion.button>
         <motion.button
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={clearAll}
           disabled={disabled}
           className="px-6 py-3 bg-gray-200 text-gray-800 rounded-xl font-bold disabled:opacity-50 cursor-pointer"
@@ -287,8 +290,8 @@ const VoiceAnswerInput: React.FC<{
           <option value="es-ES">Español</option>
         </select>
         <motion.button
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           disabled={disabled || !supported}
           onClick={isListening ? stop : start}
           className={`px-6 py-3 rounded-xl font-bold text-white ${
@@ -313,8 +316,8 @@ const VoiceAnswerInput: React.FC<{
       />
       <div className="flex items-center gap-2">
         <motion.button
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={submit}
           disabled={disabled || !editedTranscript.trim()}
           className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold disabled:opacity-50 cursor-pointer"
@@ -322,8 +325,8 @@ const VoiceAnswerInput: React.FC<{
           Submit
         </motion.button>
         <motion.button
-          whilehover={{ scale: 1.05 }}
-          whiletap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => {
             setEditedTranscript("");
           }}
@@ -347,8 +350,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   const hintTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [hintVisible, setHintVisible] = useState(false);
-  const [hintTimeLeft, setHintTimeLeft] = useState<number>(GAME_CONFIG.HINT_DURATION);
-  const [gameTimeLeft, setGameTimeLeft] = useState<number>(GAME_CONFIG.GAME_DURATION);
+  const [hintTimeLeft, setHintTimeLeft] = useState<number>(
+    GAME_CONFIG.HINT_DURATION,
+  );
+  const [gameTimeLeft, setGameTimeLeft] = useState<number>(
+    GAME_CONFIG.GAME_DURATION,
+  );
   const [showResult, setShowResult] = useState(false);
   const [answerRevealed, setAnswerRevealed] = useState(false);
   const [revealingLetters, setRevealingLetters] = useState<string[]>([]);
@@ -359,12 +366,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   const currentWord = gameState.words[gameState.currentWordIndex];
   const maskedWord = useMemo(
     () => createMaskedWord(currentWord.word),
-    [currentWord.word]
+    [currentWord.word],
   );
 
   // Create stable callback for timer to prevent useEffect re-runs
   const handleTimeout = useCallback(() => {
-    onAnswerSelected('');
+    onAnswerSelected("");
   }, [onAnswerSelected]);
 
   useEffect(() => {
@@ -381,9 +388,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     }, 1000);
 
     gameTimerRef.current = setInterval(() => {
-      if (showResult || answerRevealed || gameState.selectedAnswer !== null) return;
+      if (showResult || answerRevealed || gameState.selectedAnswer !== null)
+        return;
 
-      setGameTimeLeft(prev => {
+      setGameTimeLeft((prev) => {
         if (prev <= 1) {
           handleTimeout();
           return 0;
@@ -396,7 +404,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       if (hintTimerRef.current) clearInterval(hintTimerRef.current);
       if (gameTimerRef.current) clearInterval(gameTimerRef.current);
     };
-  }, [hintVisible, showResult, answerRevealed, gameState.selectedAnswer, handleTimeout]);
+  }, [
+    hintVisible,
+    showResult,
+    answerRevealed,
+    gameState.selectedAnswer,
+    handleTimeout,
+  ]);
 
   // Reset reveal state when moving to a new word
   useEffect(() => {
@@ -418,7 +432,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
     }
   };
 
-  const startLetterReveal = () => {
+  const startLetterReveal = useCallback(() => {
     const word = currentWord.correctAnswer;
     const wordArray = word.split("");
 
@@ -441,8 +455,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
         clearInterval(revealInterval);
         setIsRevealing(false);
       }
-    }, 250); // Reveal one letter every 250ms for more dramatic effect
-  };
+    }, 100);
+  }, [currentWord.correctAnswer]);
 
   // When an answer is submitted (from any mode), stop timer and show result
   useEffect(() => {
@@ -452,7 +466,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       // Start letter reveal animation
       startLetterReveal();
     }
-  }, [gameState.selectedAnswer]);
+  }, [gameState.selectedAnswer, startLetterReveal]);
 
   const handleNextTurn = () => {
     setShowResult(false);
@@ -528,8 +542,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               )}
               <div className="mt-4">
                 <motion.button
-                  whilehover={{ scale: 1.05 }}
-                  whiletap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     // Stop any timers and navigate back
                     setShowResult(false);
@@ -581,7 +595,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   ) : (
                     <AnimatedWord
                       letters={currentWord.correctAnswer.split("")}
-                      opacities={new Array(currentWord.correctAnswer.length).fill(1)}
+                      opacities={new Array(
+                        currentWord.correctAnswer.length,
+                      ).fill(1)}
                       className="justify-center"
                     />
                   )
@@ -592,11 +608,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               <div className="text-lg text-gray-600 classic-text">
                 {currentWord.correctAnswer.replace(/\s+/g, "").length} letters
               </div>
-              {answerRevealed && gameState.isAnswerCorrect === false && isRevealing && (
-                <div className="text-sm text-blue-600 mt-2 animate-pulse">
-                  Revealing the answer...
-                </div>
-              )}
+              {answerRevealed &&
+                gameState.isAnswerCorrect === false &&
+                isRevealing && (
+                  <div className="text-sm text-blue-600 mt-2 animate-pulse">
+                    Revealing the answer...
+                  </div>
+                )}
             </motion.div>
 
             {/* Hint display */}
@@ -610,12 +628,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     opacity: 0,
                     y: -20,
                     scale: 0.95,
-                    transition: { duration: 0.4, ease: "easeInOut" }
+                    transition: { duration: 0.4, ease: "easeInOut" },
                   }}
                   transition={{
                     duration: 0.3,
                     ease: "easeOut",
-                    layout: { duration: 0.2 }
+                    layout: { duration: 0.2 },
                   }}
                   layout
                   className="bg-yellow-100 border-2 border-yellow-300 rounded-xl p-4 mb-6 overflow-hidden"
@@ -656,8 +674,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               <div className="flex items-center justify-center gap-4">
                 {!hintVisible && (
                   <motion.button
-                    whilehover={{ scale: 1.05 }}
-                    whiletap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => {
                       setHintVisible(true);
                       setHintTimeLeft(GAME_CONFIG.HINT_DURATION);
@@ -669,8 +687,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 )}
                 {!answerRevealed && (
                   <motion.button
-                    whilehover={{ scale: 1.05 }}
-                    whiletap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={handleRevealAnswer}
                     className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors cursor-pointer"
                   >
@@ -784,14 +802,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     ) : (
                       <AnimatedWord
                         letters={currentWord.correctAnswer.split("")}
-                        opacities={new Array(currentWord.correctAnswer.length).fill(1)}
+                        opacities={new Array(
+                          currentWord.correctAnswer.length,
+                        ).fill(1)}
                         className="justify-center"
                       />
                     )}
                   </div>
                   {gameState.isAnswerCorrect === false && (
                     <div className="text-sm text-gray-500">
-                      {isRevealing ? "Revealing the answer..." : "Answer revealed!"}
+                      {isRevealing
+                        ? "Revealing the answer..."
+                        : "Answer revealed!"}
                     </div>
                   )}
                 </motion.div>
@@ -806,8 +828,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                     className="mt-6"
                   >
                     <motion.button
-                      whilehover={{ scale: 1.05 }}
-                      whiletap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={handleNextTurn}
                       className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:shadow-lg transition-all cursor-pointer"
                     >
@@ -835,7 +857,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             {gameState.teams.map((team) => (
               <motion.div
                 key={team.id}
-                whilehover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05 }}
                 className={`p-3 rounded-xl text-center ${
                   team.id === currentTeam.id
                     ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg"
